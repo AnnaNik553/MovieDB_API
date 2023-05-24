@@ -84,11 +84,14 @@
 }
 
 .card_rate {
+  margin: 0 auto;
   margin-top: auto;
 }
 
-.card_rate .ant-rate-star {
-  margin-inline-end: 5px;
+.card_rate .ant-rate-star,
+:where(.css-15rg2km).ant-rate .ant-rate-star:not(:last-child),
+:where(.css-15rg2km).ant-rate .ant-rate-star {
+  margin-inline-end: 4px;
 }
 
 @media screen and (max-width: 800px) {
@@ -97,7 +100,7 @@
   }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 600px) {
   .card {
     margin: 0.5rem 0;
     padding: 6px 10px;
