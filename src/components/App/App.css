@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+input,
+button,
+textarea {
+  font-family: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: 400;
+}
+
+.body {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.container {
+  max-width: 1010px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  background-color: #ffffff;
+}
+
+.page-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+:where(.css-dev-only-do-not-override-15rg2km).ant-tabs-top > .ant-tabs-nav::before,
+:where(.css-dev-only-do-not-override-15rg2km).ant-tabs-bottom > .ant-tabs-nav::before,
+:where(.css-dev-only-do-not-override-15rg2km).ant-tabs-top > div > .ant-tabs-nav::before,
+:where(.css-dev-only-do-not-override-15rg2km).ant-tabs-bottom > div > .ant-tabs-nav::before {
+  position: absolute;
+  width: 148px;
+  margin: auto;
+  border-bottom: 1px solid #f0f0f0;
+  content: '';
+}
+
+:where(.css-dev-only-do-not-override-15rg2km).ant-tabs-large > .ant-tabs-nav .ant-tabs-tab {
+  padding: 16px 10px;
+  font-size: 16px;
+}
+
+:where(.css-dev-only-do-not-override-15rg2km).ant-tabs .ant-tabs-tab + .ant-tabs-tab {
+  margin: 0 0 0 20px;
+}
+
+@media screen and (max-width: 400px) {
+  .container {
+    padding: 0.5rem;
+  }
+}
