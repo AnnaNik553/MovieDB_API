@@ -83,11 +83,11 @@
   display: none;
 }
 
-:where(.css-dev-only-do-not-override-15rg2km).ant-rate {
+.card_rate {
   margin-top: auto;
 }
 
-:where(.css-dev-only-do-not-override-15rg2km).ant-rate .ant-rate-star:not(:last-child) {
+.card_rate .ant-rate-star {
   margin-inline-end: 5px;
 }
 
