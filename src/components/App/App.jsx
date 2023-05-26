@@ -17,8 +17,8 @@ export default class App extends Component {
   genres = []
 
   state = {
-    currentMovies: false,
-    totalResults: 1,
+    currentMovies: [],
+    totalResults: 0,
     page: 1,
     ratedMovies: [],
     totalRatedResults: 0,
@@ -148,7 +148,7 @@ export default class App extends Component {
             <div className="page-content">
               {movies} {preloader} {errorMessage}
             </div>
-            {hasData && (
+            {currentMovies.length > 0 && hasData && (
               <Paginate page={page} totalResults={totalResults} getMovies={this.getMovies} queryParam={queryParam} />
             )}
           </div>
@@ -162,7 +162,7 @@ export default class App extends Component {
             <div className="page-content">
               {ratingMovies} {preloader} {errorMessage}
             </div>
-            {hasData && (
+            {ratedMovies.length > 0 && (
               <Paginate
                 page={pageRated}
                 totalResults={totalRatedResults}

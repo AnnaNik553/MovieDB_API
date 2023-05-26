@@ -1,4 +1,10 @@
 export default class MoviedbService {
+  MAX_TOTAL_RESULTS = 500 * 20 // page must be less than or equal to 500 - themoviedb.org
+
+  BASE_URL = 'https://api.themoviedb.org/3'
+
+  API_KEY = '199717ff7c34f5edd03b2504d549ddcd'
+
   getResource = async (url) => {
     const response = await fetch(`${url}`)
 
@@ -35,7 +41,8 @@ export default class MoviedbService {
   }
 
   getDataFields = (data) => {
-    const { total_results: totalResults, page, total_pages: totalPages } = data
+    const { total_results: totalRes, page, total_pages: totalPages } = data
+    const totalResults = totalRes > this.MAX_TOTAL_RESULTS ? this.MAX_TOTAL_RESULTS : totalRes
     const movies = this.extractRequiredFields(data)
     return [movies, totalResults, page, totalPages]
   }
@@ -44,26 +51,24 @@ export default class MoviedbService {
     if (keyword) {
       const keywords = keyword.trim().toLowerCase().replaceAll(' ', '+')
       const data = await this.getResource(
-        `https://api.themoviedb.org/3/search/movie?api_key=199717ff7c34f5edd03b2504d549ddcd&query=${keywords}&page=${page}`
+        `${this.BASE_URL}/search/movie?api_key=${this.API_KEY}&query=${keywords}&page=${page}`
       )
       return this.getDataFields(data)
     }
-    const data = await this.getResource(
-      `https://api.themoviedb.org/3/movie/top_rated?api_key=199717ff7c34f5edd03b2504d549ddcd&page=${page}`
-    )
+    const data = await this.getResource(`${this.BASE_URL}/movie/top_rated?api_key=${this.API_KEY}&page=${page}`)
     return this.getDataFields(data)
   }
 
   getRatedMoviesAPI = async (guestSessionId, page = 1) => {
     const data = await this.getResource(
-      `https://api.themoviedb.org/3/guest_session/${guestSessionId}/rated/movies?api_key=199717ff7c34f5edd03b2504d549ddcd&page=${page}`
+      `${this.BASE_URL}/guest_session/${guestSessionId}/rated/movies?api_key=${this.API_KEY}&page=${page}`
     )
     return this.getDataFields(data)
   }
 
   addRatingAPI = async (id, rate, guestSessionId) => {
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${id}/rating?api_key=199717ff7c34f5edd03b2504d549ddcd&guest_session_id=${guestSessionId}`,
+      `${this.BASE_URL}/movie/${id}/rating?api_key=${this.API_KEY}&guest_session_id=${guestSessionId}`,
       {
         method: 'POST',
         headers: {
@@ -76,7 +81,7 @@ export default class MoviedbService {
 
     if (!response.ok) {
       throw new Error(
-        `Error fetching data:  https://api.themoviedb.org/3/movie/${id}/rating?api_key=199717ff7c34f5edd03b2504d549ddcd&guest_session_id=${guestSessionId} ${response.status}`
+        `Error fetching data:  ${this.BASE_URL}/movie/${id}/rating?api_key=${this.API_KEY}&guest_session_id=${guestSessionId} ${response.status}`
       )
     }
 
@@ -85,9 +90,7 @@ export default class MoviedbService {
   }
 
   getGenres = async () => {
-    const data = await this.getResource(
-      'https://api.themoviedb.org/3/genre/movie/list?api_key=199717ff7c34f5edd03b2504d549ddcd'
-    )
+    const data = await this.getResource(`${this.BASE_URL}/genre/movie/list?api_key=${this.API_KEY}`)
     return data.genres
   }
 
@@ -100,9 +103,7 @@ export default class MoviedbService {
     // сначала из локалстораж, если ее нет или старая, то по сети
     let guestSession = JSON.parse(localStorage.getItem('TMDBguestSession'))
     if (this.isSessionExpired(guestSession)) {
-      const data = await this.getResource(
-        'https://api.themoviedb.org/3/authentication/guest_session/new?api_key=199717ff7c34f5edd03b2504d549ddcd'
-      )
+      const data = await this.getResource(`${this.BASE_URL}/authentication/guest_session/new?api_key=${this.API_KEY}`)
       guestSession = { id: data.guest_session_id, expires_at: data.expires_at }
       localStorage.setItem('TMDBguestSession', JSON.stringify(guestSession))
       return data.guest_session_id
@@ -117,9 +118,7 @@ export default class MoviedbService {
       .fill(0)
       .map((_, i) =>
         this.getResource(
-          `https://api.themoviedb.org/3/guest_session/${guestSessionId}/rated/movies?api_key=199717ff7c34f5edd03b2504d549ddcd&page=${
-            i + 1
-          }`
+          `${this.BASE_URL}/guest_session/${guestSessionId}/rated/movies?api_key=${this.API_KEY}&page=${i + 1}`
         )
       )
     const dataArr = await Promise.all(requests)

@@ -4,20 +4,26 @@ import debounce from 'lodash/debounce'
 import './SearchForm.css'
 
 export default class SearchForm extends Component {
-  state = {
-    label: '',
+  debouncedFn = debounce((value) => this.props.getMovies(value), 500)
+
+  constructor(props) {
+    super(props)
+    this.textInput = React.createRef()
+    this.state = {
+      label: '',
+    }
   }
 
-  debouncedFn = debounce((value) => this.props.getMovies(value), 300)
+  componentDidMount() {
+    this.textInput.current.focus()
+  }
 
-  onChange = (e) => {
+  onChange = ({ target }) => {
     this.setState({
-      label: e.target.value,
+      label: target.value,
     })
-    if (e.target.value.trim() === '') {
-      return
-    }
-    this.debouncedFn(e.target.value)
+    if (!target.value.trim()) return
+    this.debouncedFn(target.value)
   }
 
   onSubmit = (e) => {
@@ -35,6 +41,7 @@ export default class SearchForm extends Component {
           placeholder="Type to search..."
           value={label}
           onChange={this.onChange}
+          ref={this.textInput}
         />
       </form>
     )

@@ -11,3 +11,7 @@
 :where(.css-dev-only-do-not-override-15rg2km).ant-pagination .ant-pagination-item-active a {
   color: #fff;
 }
+
+:where(.css-dev-only-do-not-override-15rg2km).ant-pagination .ant-pagination-options {
+  display: none;
+}
