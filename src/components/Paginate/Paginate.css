@@ -12,6 +12,7 @@
   color: #fff;
 }
 
-:where(.css-dev-only-do-not-override-15rg2km).ant-pagination .ant-pagination-options {
+:where(.css-dev-only-do-not-override-15rg2km).ant-pagination .ant-pagination-options,
+:where(.css-15rg2km).ant-pagination .ant-pagination-options {
   display: none;
 }
